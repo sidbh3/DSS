@@ -16,7 +16,8 @@ import SuperUserDashboard from "../pages/SupperUser/SuperUserDashboard";
 import UserDashboard from "../pages/User/UserDashboard";
 
 const AppRoutes = () => {
-  const { role } = useAuth();
+  // const { role } = useAuth();
+  const role="superuser"
   return (
     <Router>
       <Routes>
