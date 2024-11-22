@@ -16,7 +16,7 @@ function Settings() {
     <div className="w-full h-[80vh] bg-background rounded-md">
       <div className="h-full w-full">
         <div className="w-full h-full">
-          <h1 className="text-4xl font-bold text-secondary-foreground mb-6 tracking-widest">
+          <h1 className="text-2xl font-bold text-secondary-foreground mb-6 tracking-widest">
             Settings
           </h1>
           <div className="space-y-8 flex flex-col justify-between w-full h-[65vh]">
