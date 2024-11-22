@@ -1,20 +1,12 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { useTable, usePagination, useSortBy } from "react-table";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import LicenseForm from "../popup/licenseFormPopup/LicenseForm";
-import LicenseHistoryModal from "../popup/LicenseHistoryModal/LicenseHistoryModal";
-import { toast } from "react-toastify";
-import {
-  allocateLicense,
-  fetchLicensesHistory,
-  revokeLicense,
-} from "../../Api/api";
 import { Close, Search } from "@mui/icons-material";
 import { IoFilterSharp } from "react-icons/io5";
 import { FaEye } from "react-icons/fa";
 import { LuLoader } from "react-icons/lu";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import LoaderComponent from "../Common/LoaderComponent";
+import LoaderComponent from "../../Common/LoaderComponent";
 
 function DateFormatter({ dateString }) {
   const formatDate = (dateString) => {
@@ -47,12 +39,8 @@ function DateFormatter({ dateString }) {
   return <span>{formatDate(dateString)}</span>;
 }
 
-const Table = ({ tabData, loading, setLoading, error, fetchLicensesData }) => {
+const Table = ({ tabData, loading, error }) => {
   const [activeTab, setActiveTab] = useState(0);
-  const [showLicensePopup, setShowLicensePopup] = useState(false);
-  const [selectedRow, setSelectedRow] = useState(null);
-  const [showHistoryModal, setShowHistoryModal] = useState(false);
-  const [selectedLicenseHistory, setSelectedLicenseHistory] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showColumnToggle, setShowColumnToggle] = useState(false);
 
@@ -80,106 +68,6 @@ const Table = ({ tabData, loading, setLoading, error, fetchLicensesData }) => {
     }));
   };
 
-  const handleIssueClick = (row, buttonText) => {
-    // console.log(row);
-    if (row?.is_reserved === 1) {
-      toast.warn(
-        "This license cannot be allocated as it is a reserved license."
-      );
-      return;
-    }
-
-    setShowLicensePopup(true);
-    setSelectedRow({ ...row, buttonText });
-  };
-
-  const handleSubmit = async (email, licenseId) => {
-    setShowLicensePopup(false);
-    setLoading(true);
-    try {
-      const response = await allocateLicense({
-        allocated_to: email,
-        license: licenseId,
-      });
-
-      if (!response.ok) {
-        toast.error("Error allocating license");
-        throw new Error("Network response was not ok");
-      }
-      toast.success("License allocated successfully");
-      setLoading(false);
-      await fetchLicensesData();
-    } catch (error) {
-      toast.error("Error allocating license");
-      setLoading(false);
-    }
-  };
-
-  const handleRevoke = async (email, licenseId) => {
-    setShowLicensePopup(false);
-    setLoading(true);
-
-    try {
-      const response = await revokeLicense({
-        allocated_to: email,
-        license: licenseId,
-      });
-
-      if (!response.ok) {
-        toast.error("Error revoking license");
-      }
-      setLoading(false);
-      toast.success("License revoked successfully");
-      await fetchLicensesData();
-    } catch (error) {
-      setLoading(false);
-      toast.error("Error revoking license");
-    }
-  };
-
-  const handliPrintHistory = async (licenseId) => {
-    setLoading(true);
-
-    try {
-      const response = await fetchLicensesHistory(licenseId);
-      const history = await response.json();
-      console.log(history.length);
-
-      if (!response.ok) {
-        setSelectedLicenseHistory({
-          licenseId: licenseId,
-          history: [], // Send empty array instead of string
-        });
-        toast.info(history.detail || "No history data available");
-        return;
-      }
-
-      // If data is available, set it in state
-      setSelectedLicenseHistory({
-        licenseId: licenseId,
-        history: Array.isArray(history) ? history : [], // Ensure we always have an array
-      });
-
-      // setLoading(false);
-      // setShowHistoryModal(true);
-    } catch (error) {
-      console.error("Error fetching license history:", error);
-      setSelectedLicenseHistory({
-        licenseId: licenseId,
-        history: [], // Send empty array instead of string
-      });
-      toast.error(`Error fetching license history: ${error.message}`);
-    } finally {
-      setLoading(false);
-      setShowHistoryModal(true);
-    }
-  };
-
-  const handleView = (rowData) => {
-    // Implement view functionality
-    toast.success(`Viewing data for message ID: ${rowData.message_id}`);
-  };
-
   const filteredData = useMemo(() => {
     const currentTabData = tabData[activeTab]?.data || [];
     if (!Array.isArray(currentTabData)) return [];
@@ -199,11 +87,7 @@ const Table = ({ tabData, loading, setLoading, error, fetchLicensesData }) => {
         return {
           Header: header,
           accessor: key === "sr._no." ? "sr_no" : key,
-          // sortType: (rowA, rowB, columnId) => {
-          //   const a = String(rowA?.values[columnId]).toLowerCase();
-          //   const b = String(rowB?.values[columnId]).toLowerCase();
-          //   return a.localeCompare(b);
-          // },
+
           show: visibleColumns[key],
           Cell: ({ value, row }) => {
             if (header === "Issue") {
@@ -213,7 +97,6 @@ const Table = ({ tabData, loading, setLoading, error, fetchLicensesData }) => {
                   className={`${
                     buttonText === "Revoke" ? "bg-red-500" : "bg-green-500"
                   } text-white w-16 py-1 rounded cursor-pointer transition-colors duration-300`}
-                  onClick={() => handleIssueClick(row?.original, buttonText)}
                 >
                   {buttonText}
                 </button>
@@ -224,7 +107,6 @@ const Table = ({ tabData, loading, setLoading, error, fetchLicensesData }) => {
               return (
                 <button
                   className={`bg-green-500 text-white w-16 py-1 rounded cursor-pointer transition-colors duration-300`}
-                  onClick={() => handliPrintHistory(row.original.license_id)}
                 >
                   {loading ? (
                     <LuLoader className="animate-spin -ml-1 mr-2 h-5 w-5 text-white" />
@@ -326,10 +208,7 @@ const Table = ({ tabData, loading, setLoading, error, fetchLicensesData }) => {
             if (header === "DETAILED REPORT") {
               return (
                 <div className="">
-                  <button
-                    onClick={() => handleView(row?.original)}
-                    className="bg-primary hover:bg-secondary text-white font-semibold py-2 px-4 rounded-md inline-flex items-center text-xs"
-                  >
+                  <button className="bg-primary hover:bg-secondary text-white font-semibold py-2 px-4 rounded-md inline-flex items-center text-xs">
                     <FaEye className="mr-2" />
                     <span>View</span>
                   </button>
@@ -376,12 +255,12 @@ const Table = ({ tabData, loading, setLoading, error, fetchLicensesData }) => {
 
   return (
     <div className="overflow-hidden flex flex-col gap-2">
-      <div className="flex gap-2">
+      <div className="flex items-center justify-between gap-10">
         {tabData?.map((tab, index) => (
           <button
             key={index}
             className={`
-        flex-1 py-3 px-6 text-md font-semibold rounded-lg tracking-widest
+        h-32 w-52 text-md font-semibold rounded-lg tracking-widest flex flex-col items-center justify-center gap-2
         ${
           activeTab === index
             ? "bg-background text-primary dark:text-white shadow-lg border border-primary dark:border-gray-800 "
@@ -390,7 +269,8 @@ const Table = ({ tabData, loading, setLoading, error, fetchLicensesData }) => {
       `}
             onClick={() => setActiveTab(index)}
           >
-            {tab?.label}
+            <span className="text-xl font-bold">Monthly Report</span>
+            <span>{tab?.label}</span>
           </button>
         ))}
       </div>
@@ -576,22 +456,6 @@ const Table = ({ tabData, loading, setLoading, error, fetchLicensesData }) => {
           </div>
         )}
       </div>
-      {showLicensePopup && (
-        <LicenseForm
-          onClose={() => setShowLicensePopup(false)}
-          rowData={selectedRow}
-          handleSubmit={handleSubmit}
-          handleRevoke={handleRevoke}
-          loading={loading}
-        />
-      )}
-      {showHistoryModal && (
-        <LicenseHistoryModal
-          licenseId={selectedLicenseHistory.licenseId}
-          history={selectedLicenseHistory.history}
-          onClose={() => setShowHistoryModal(false)}
-        />
-      )}
     </div>
   );
 };
