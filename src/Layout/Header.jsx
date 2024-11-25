@@ -16,9 +16,10 @@ const Header = () => {
   const { setTheme, theme } = useTheme();
 
   return (
-    <div className="w-full h-16 flex items-center justify-between px-6 dark:border-b bg-white dark:bg-background dark:text-white shadow-md">
+    <div className="w-full h-16 flex items-center justify-between px-6 dark:border-b bg-[#001F54] dark:bg-background dark:text-white shadow-md">
+  
       <div className="w-full">
-        <div className="flex flex-col text-secondary-foreground">
+        <div className="flex flex-col text-white">
           <p className="text-sm">Welcome</p>
           <div className="flex items-end gap-2">
             <h1 className="font-bold text-xl">{user?.name || "Username,"}</h1>
@@ -65,8 +66,8 @@ const Header = () => {
           </DropdownMenuContent>
         </DropdownMenu> */}
         <div className="flex flex-col items-center">
-          <p className="text-sm text-secondary-foreground">Eastern</p>
-          <p className="text-sm text-secondary-foreground">Air-Command</p>
+          <p className="text-sm text-white">Eastern</p>
+          <p className="text-sm text-white">Air-Command</p>
         </div>
       </div>
     </div>

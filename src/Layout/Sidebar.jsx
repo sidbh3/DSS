@@ -143,7 +143,7 @@ function Sidebar() {
 
   return (
     <>
-      <div className="w-full h-screen bg-primary dark:bg-gray-800 text-white flex flex-col px-2">
+      <div className="w-full h-screen bg-[#F4F4F4] dark:bg-gray-800 text-black flex flex-col px-2">
         <div className="pt-4 w-full pl-10">
           <img
             src={logoTop}
@@ -181,7 +181,7 @@ function Sidebar() {
         </nav>
       </div>
       {showLogoutModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
           <form
             onSubmit={(e) => {
               e.preventDefault();
