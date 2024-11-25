@@ -117,7 +117,7 @@ const userMenuItems = [
 
 function Sidebar() {
   // const { role } = useAuth();
-  const role = "superuser";
+  const role = "";
   const { logout } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();

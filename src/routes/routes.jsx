@@ -25,10 +25,11 @@ import UploadSymbols from "../pages/SupperUser/UploadSymbols";
 import ViewDocuments from "../pages/SupperUser/ViewDocuments";
 import ViewSymbols from "../pages/SupperUser/ViewSymbols";
 import Logout from "../pages/Logout";
+import MapPage from "../pages/User/MapPage";
 
 const AppRoutes = () => {
   // const { role } = useAuth();
-  const role="superuser"
+  const role=""
   return (
     <Router>
       <Routes>
@@ -62,7 +63,7 @@ const AppRoutes = () => {
           <>
           <Route path="/" element={<ProtectedRoute><DashboardLayout><UserDashboard /></DashboardLayout></ProtectedRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout><UserDashboard /></DashboardLayout></ProtectedRoute>} />
-          <Route path="/map" element={<ProtectedRoute><DashboardLayout><Map /></DashboardLayout></ProtectedRoute>} />
+          <Route path="/map" element={<ProtectedRoute><DashboardLayout><MapPage/></DashboardLayout></ProtectedRoute>} />
           <Route path="/profile" element={<ProtectedRoute><DashboardLayout><Profile /></DashboardLayout></ProtectedRoute>} />
           <Route path="/settings" element={<ProtectedRoute><DashboardLayout><Settings /></DashboardLayout></ProtectedRoute>} />
         </>
