@@ -130,20 +130,20 @@ function Sidebar() {
       ? superUserMenuItems
       : userMenuItems;
 
-  const handleLogout = () => {
-    setShowLogoutModal(true);
-  };
+  // const handleLogout = () => {
+  //   setShowLogoutModal(true);
+  // };
 
-  const confirmLogout = () => {
-    logout();
-    sessionStorage.removeItem("token");
-    navigate("/login");
-    setShowLogoutModal(false);
-  };
+  // const confirmLogout = () => {
+  //   logout();
+  //   sessionStorage.removeItem("token");
+  //   navigate("/login");
+  //   setShowLogoutModal(false);
+  // };
 
   return (
     <>
-      <div className="w-full h-screen bg-[#F4F4F4] dark:bg-gray-800 text-black flex flex-col px-2">
+      <div className="w-full h-screen bg-[#F4F4F4] text-secondary-foreground flex flex-col px-2">
         <div className="pt-4 w-full pl-10">
           <img
             src={logoTop}
@@ -170,17 +170,16 @@ function Sidebar() {
             ))}
           </ul>
           <div className="w-full mb-7 px-3">
-            <button
-              onClick={handleLogout}
-              className="flex items-center gap-2 text-[16px] tracking-widest group"
-            >
-              <BsBoxArrowLeft className="text-xl group-hover:-translate-x-2  transition duration-300 ease-in-out" />
-              Logout
-            </button>
+            <Link to="/logout" className="">
+              <button className="flex items-center gap-2 text-[16px] tracking-widest group">
+                <BsBoxArrowLeft className="text-xl group-hover:-translate-x-2  transition duration-300 ease-in-out" />
+                Logout
+              </button>
+            </Link>
           </div>
         </nav>
       </div>
-      {showLogoutModal && (
+      {/* {showLogoutModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 ">
           <form
             onSubmit={(e) => {
@@ -213,7 +212,7 @@ function Sidebar() {
             </div>
           </form>
         </div>
-      )}
+      )} */}
     </>
   );
 }

@@ -24,6 +24,7 @@ import UploadDocuments from "../pages/SupperUser/UploadDocuments";
 import UploadSymbols from "../pages/SupperUser/UploadSymbols";
 import ViewDocuments from "../pages/SupperUser/ViewDocuments";
 import ViewSymbols from "../pages/SupperUser/ViewSymbols";
+import Logout from "../pages/Logout";
 
 const AppRoutes = () => {
   // const { role } = useAuth();
@@ -66,7 +67,7 @@ const AppRoutes = () => {
           <Route path="/settings" element={<ProtectedRoute><DashboardLayout><Settings /></DashboardLayout></ProtectedRoute>} />
         </>
         )}
-
+        <Route path="/logout" element={<ProtectedRoute><DashboardLayout><Logout /></DashboardLayout></ProtectedRoute>} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </Router>
