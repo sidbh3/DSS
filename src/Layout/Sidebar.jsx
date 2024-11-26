@@ -60,7 +60,7 @@ const superAdminMenuItems = [
   },
 ];
 
-const superUserMenuItems = [
+const systemuserMenuItems = [
   { title: "Dashboard", path: "/", icon: <FaHome className="text-xl" /> },
   {
     title: "Upload Documents",
@@ -126,8 +126,8 @@ function Sidebar() {
   const menuItems =
     role === "superadmin"
       ? superAdminMenuItems
-      : role === "superuser"
-      ? superUserMenuItems
+      : role === "systemuser"
+      ? systemuserMenuItems
       : userMenuItems;
 
   return (

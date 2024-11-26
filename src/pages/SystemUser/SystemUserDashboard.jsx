@@ -38,15 +38,17 @@ function SuperUserDashboard() {
 
   const tabData = [
     {
-      label: "Available License",
+      label: "Generated",
       headers: [
         "Sr. No.",
-        "License ID",
-        "Plugin ID",
-        "Email",
-        "Validity From",
-        "Validity Till",
-        "Issue",
+        "Report Name",
+        "Origin",
+        "Upload Date",
+        "Category"
+        // "Email",
+        // "Validity From",
+        // "Validity Till",
+        // "Issue",
       ],
       data: licenseData
         ?.filter(
@@ -66,15 +68,16 @@ function SuperUserDashboard() {
         })),
     },
     {
-      label: "Plugin Installed",
+      label: "OSINT",
       headers: [
         "Sr. No.",
-        "License ID",
-        "Plugin ID",
-        "Email",
-        "Validity From",
-        "Validity Till",
-        "Issue",
+        "Report Name",
+        "Origin",
+        "Upload Date",
+        "Category",
+        // "Validity From",
+        // "Validity Till",
+        // "Issue",
       ],
       data: licenseData
         ?.filter(
@@ -95,15 +98,16 @@ function SuperUserDashboard() {
         })),
     },
     {
-      label: "Plugin Not Installed",
+      label: "Confidential",
       headers: [
         "Sr. No.",
-        "License ID",
-        "Plugin ID",
-        "Email",
-        "Validity From",
-        "Validity Till",
-        "Issue",
+        "Report Name",
+        "Origin",
+        "Upload Date",
+        "Category",
+        // "Validity From",
+        // "Validity Till",
+        // "Issue",
       ],
       data: licenseData
         ?.filter(
@@ -121,15 +125,16 @@ function SuperUserDashboard() {
         })),
     },
     {
-      label: "License Report",
+      label: "Exception",
       headers: [
         "Sr. No.",
-        "License ID",
-        "Plugin ID",
-        "Email",
-        "Validity From",
-        "Validity Till",
-        "History",
+        "Report Name",
+        "Origin",
+        "Upload Date",
+        "Category"
+        // "Validity From",
+        // "Validity Till",
+        // "History",
       ],
       data: licenseData?.map((item, index) => ({
         sr_no: index + 1,

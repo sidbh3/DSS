@@ -12,18 +12,18 @@ import Profile from "../pages/Profile";
 import Settings from "../pages/Settings";
 import { useAuth } from "../context/AuthContext";
 import SuperAdminDashboard from "../pages/SuperAdmin/SuperAdminDashboard";
-import SuperUserDashboard from "../pages/SupperUser/SuperUserDashboard";
+import SuperUserDashboard from "../pages/SystemUser/SystemUserDashboard";
 import UserDashboard from "../pages/User/UserDashboard";
 import ContentManagement from "../pages/SuperAdmin/ContentManagement";
 import DataAnalysis from "../pages/SuperAdmin/DataAnalysis";
 import RoleManagement from "../pages/SuperAdmin/RoleManagement";
 import UserManagement from "../pages/SuperAdmin/UserManagement";
-import GenerateReports from "../pages/SupperUser/GenerateReports";
-import Starred from "../pages/SupperUser/Starred";
-import UploadDocuments from "../pages/SupperUser/UploadDocuments";
-import UploadSymbols from "../pages/SupperUser/UploadSymbols";
-import ViewDocuments from "../pages/SupperUser/ViewDocuments";
-import ViewSymbols from "../pages/SupperUser/ViewSymbols";
+import GenerateReports from "../pages/SystemUser/GenerateReports";
+import Starred from "../pages/SystemUser/Starred";
+import UploadDocuments from "../pages/SystemUser/UploadDocuments";
+import UploadSymbols from "../pages/SystemUser/UploadSymbols";
+import ViewDocuments from "../pages/SystemUser/ViewDocuments";
+import ViewSymbols from "../pages/SystemUser/ViewSymbols";
 import Logout from "../pages/Logout";
 import MapPage from "../pages/User/MapPage";
 
@@ -46,7 +46,7 @@ const AppRoutes = () => {
            <Route path="/user-management" element={<ProtectedRoute><DashboardLayout><UserManagement /></DashboardLayout></ProtectedRoute>} />
            <Route path="/profile" element={<ProtectedRoute><DashboardLayout><Profile /></DashboardLayout></ProtectedRoute>} />
          </>
-        ) : role === "superuser" ? (
+        ) : role === "systemuser" ? (
           <>
           <Route path="/" element={<ProtectedRoute><DashboardLayout><SuperUserDashboard /></DashboardLayout></ProtectedRoute>} />
           <Route path="/dashboard" element={<ProtectedRoute><DashboardLayout><SuperUserDashboard /></DashboardLayout></ProtectedRoute>} />

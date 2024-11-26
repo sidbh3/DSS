@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Table from "../../components/Common/Tables/Table";
+import { generateDummyLicenseData } from "../../dummyDataGenerator";
 import { fetchLicenses } from "../../Api/api";
 
 function UserDashboard() {
@@ -38,12 +39,13 @@ function UserDashboard() {
 
   const tabData = [
     {
-      label: "Monthly Report",
+      label: "Generated",
       headers: [
         "Sr. No.",
         "Report Name",
         "Origin",
         "Upload Date",
+        "Category"
         // "Email",
         // "Validity From",
         // "Validity Till",
@@ -67,12 +69,13 @@ function UserDashboard() {
         })),
     },
     {
-      label: "Plugin Installed",
+      label: "OSINT",
       headers: [
         "Sr. No.",
         "Report Name",
         "Origin",
         "Upload Date",
+        "Category",
         // "Validity From",
         // "Validity Till",
         // "Issue",
@@ -96,12 +99,13 @@ function UserDashboard() {
         })),
     },
     {
-      label: "Plugin Not Installed",
+      label: "Confidential",
       headers: [
         "Sr. No.",
         "Report Name",
         "Origin",
         "Upload Date",
+        "Category",
         // "Validity From",
         // "Validity Till",
         // "Issue",
@@ -122,12 +126,13 @@ function UserDashboard() {
         })),
     },
     {
-      label: "License Report",
+      label: "Exception",
       headers: [
         "Sr. No.",
         "Report Name",
         "Origin",
         "Upload Date",
+        "Category"
         // "Validity From",
         // "Validity Till",
         // "History",
@@ -147,7 +152,7 @@ function UserDashboard() {
   return (
     <div className="w-full flex flex-col gap-5">
       <h1 className="text-2xl font-semibold text-secondary-foreground tracking-widest">
-        Super User Dashboard
+        Normal User Dashboard
       </h1>
       <div className="">
         <Table
