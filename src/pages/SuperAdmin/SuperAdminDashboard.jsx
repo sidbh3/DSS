@@ -1,13 +1,163 @@
-import React from "react";
-const SuperAdminDashboard = () => {
+import { useEffect, useState } from "react";
+import { Bar } from "react-chartjs-2";
+import { Pie } from "react-chartjs-2";
+import { Chart as ChartJS } from 'chart.js/auto';
+import { generateDummyLicenseData } from "../../dummyDataGenerator";
+
+function SuperAdminDashboard() {
+  const [licenseData, setLicenseData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  const fetchLicensesData = async () => {
+    try {
+      const dummyData = generateDummyLicenseData();
+      setLicenseData(dummyData);
+    } catch (error) {
+      console.error("Failed to load license data:", error);
+      setError("Failed to load license data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchLicensesData();
+  }, []);
+
+  const systemRunningCount = licenseData.filter(item => !item.allocated_to && (!item.plugins || item.plugins.length === 0)).length;
+  const standardUserCount = licenseData.filter(item => item.allocated_to && item.plugins && item.plugins.length > 0).length;
+  const dataRecordsCount = licenseData.filter(item => item.allocated_to && (!item.plugins || item.plugins.length === 0)).length;
+  const totalSystemUsers = licenseData.length;
+
+  const barChartData = {
+    labels: ['System Running', 'Standard Users', 'Data Records', 'Total Users'],
+    datasets: [{
+      label: 'Statistics',
+      data: [systemRunningCount, standardUserCount, dataRecordsCount, totalSystemUsers],
+      backgroundColor: ['#4F46E5', '#10B981', '#F59E0B', '#6366F1'],
+      borderColor: ['#4338CA', '#059669', '#D97706', '#4F46E5'],
+      borderWidth: 1
+    }]
+  };
+
+  const pieChartData = {
+    labels: ['System Running', 'Standard Users', 'Data Records'],
+    datasets: [{
+      data: [systemRunningCount, standardUserCount, dataRecordsCount],
+      backgroundColor: ['#4F46E5', '#10B981', '#F59E0B'],
+      borderColor: ['#4338CA', '#059669', '#D97706'],
+      borderWidth: 1
+    }]
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: {
+          font: {
+            size: 13
+          },
+          padding: 20,
+          boxWidth: 15
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true,
+        grid: {
+          color: 'rgba(0, 0, 0, 0.1)'
+        }
+      },
+      x: {
+        grid: {
+          display: false
+        }
+      }
+    }
+  };
+
+  const pieChartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'right',
+        labels: {
+          font: {
+            size: 13
+          },
+          padding: 20,
+          boxWidth: 15
+        }
+      }
+    }
+  };
+
   return (
-    <div className="w-full flex flex-col gap-5">
-      <h1 className="text-2xl font-semibold text-secondary-foreground tracking-widest">
+    <div className="w-full flex flex-col gap-8 p-8 bg-gray-50">
+      <h1 className="text-3xl font-bold text-gray-800 tracking-wide border-b pb-4">
         Super Admin Dashboard
       </h1>
-      <div className="mt-6"></div>
+
+      <div className="grid grid-cols-4 gap-6">
+        <div className="bg-white rounded-xl shadow-md p-6 transition-all duration-300 hover:shadow-lg">
+          <div className="flex flex-col">
+            <h3 className="text-gray-500 text-base font-medium mb-2">Total System Running</h3>
+            <p className="text-3xl font-bold text-indigo-600">{systemRunningCount}</p>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl shadow-md p-6 transition-all duration-300 hover:shadow-lg">
+          <div className="flex flex-col">
+            <h3 className="text-gray-500 text-base font-medium mb-2">Total Standard Users</h3>
+            <p className="text-3xl font-bold text-emerald-600">{standardUserCount}</p>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl shadow-md p-6 transition-all duration-300 hover:shadow-lg">
+          <div className="flex flex-col">
+            <h3 className="text-gray-500 text-base font-medium mb-2">Total Data Records</h3>
+            <p className="text-3xl font-bold text-amber-600">{dataRecordsCount}</p>
+          </div>
+        </div>
+        <div className="bg-white rounded-xl shadow-md p-6 transition-all duration-300 hover:shadow-lg">
+          <div className="flex flex-col">
+            <h3 className="text-gray-500 text-base font-medium mb-2">Total System Users</h3>
+            <p className="text-3xl font-bold text-violet-600">{totalSystemUsers}</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-2 gap-8">
+        <div className="bg-white rounded-xl shadow-md p-8 transition-all duration-300 hover:shadow-lg">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-gray-800">Distribution Overview</h2>
+            <div className="px-3 py-1 bg-indigo-50 text-indigo-700 rounded-full text-sm font-medium">
+              Statistics
+            </div>
+          </div>
+          <div className="h-[450px] flex items-center justify-center">
+            <Bar data={barChartData} options={chartOptions} />
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-xl shadow-md p-8 transition-all duration-300 hover:shadow-lg">
+          <div className="flex items-center justify-between mb-6">
+            <h2 className="text-xl font-semibold text-gray-800">Distribution Ratio</h2>
+            <div className="px-3 py-1 bg-emerald-50 text-emerald-700 rounded-full text-sm font-medium">
+              Overview
+            </div>
+          </div>
+          <div className="h-[450px] flex items-center justify-center">
+            <Pie data={pieChartData} options={pieChartOptions} />
+          </div>
+        </div>
+      </div>
     </div>
   );
-};
+}
 
 export default SuperAdminDashboard;

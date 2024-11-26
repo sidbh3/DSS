@@ -24,16 +24,6 @@ const superAdminMenuItems = [
     icon: <FaHome className="text-xl" />,
   },
   {
-    title: "Content Management",
-    path: "/content-management",
-    icon: <FaTasks className="text-xl" />,
-  },
-  {
-    title: "Data Analysis",
-    path: "/data-analysis",
-    icon: <FaChartPie className="text-xl" />,
-  },
-  {
     title: "Role Management",
     path: "/role-management",
     icon: <FaUsers className="text-xl" />,
@@ -42,6 +32,16 @@ const superAdminMenuItems = [
     title: "User Management",
     path: "/user-management",
     icon: <FaUsers className="text-xl" />,
+  },
+  {
+    title: "Content Management",
+    path: "/content-management",
+    icon: <FaTasks className="text-xl" />,
+  },
+  {
+    title: "Data Analysis",
+    path: "/data-analysis",
+    icon: <FaChartPie className="text-xl" />,
   },
   {
     title: "Support & Inquiries",
