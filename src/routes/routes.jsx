@@ -26,10 +26,11 @@ import ViewDocuments from "../pages/SystemUser/ViewDocuments";
 import ViewSymbols from "../pages/SystemUser/ViewSymbols";
 import Logout from "../pages/Logout";
 import MapPage from "../pages/User/MapPage";
+import SupportInquires from "../pages/SuperAdmin/SupportInquires";
 
 const AppRoutes = () => {
   // const { role } = useAuth();
-  const role=""
+  const role="superadmin"
   return (
     <Router>
       <Routes>
@@ -45,6 +46,7 @@ const AppRoutes = () => {
            <Route path="/support-inquiries" element={<ProtectedRoute><DashboardLayout><SupportInquires /></DashboardLayout></ProtectedRoute>} />
            <Route path="/user-management" element={<ProtectedRoute><DashboardLayout><UserManagement /></DashboardLayout></ProtectedRoute>} />
            <Route path="/profile" element={<ProtectedRoute><DashboardLayout><Profile /></DashboardLayout></ProtectedRoute>} />
+           <Route path="/settings" element={<ProtectedRoute><DashboardLayout><Settings /></DashboardLayout></ProtectedRoute>} />
          </>
         ) : role === "systemuser" ? (
           <>
