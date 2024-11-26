@@ -10,10 +10,8 @@ import { IoFilterSharp } from "react-icons/io5";
 import { FaDownload } from "react-icons/fa";
 import { toast } from "react-toastify";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
-import LoaderComponent from "../Common/LoaderComponent";
-import CommentViewModal from "../popup/CommentViewModal/CommentViewModal";
-import { fetchEmailDetails } from "../../Api/api";
-import EmailDetailsModal from "../popup/EmailDetailsModal/EmailDetailsModal";
+import LoaderComponent from "../LoaderComponent";
+import { fetchEmailDetails } from "../../../Api/api";
 
 function DateFormatter({ dateString }) {
   const formatDate = (dateString) => {
@@ -575,28 +573,6 @@ function Table2({
           </div>
         </div>
       )}
-      <AdminCommentModal
-        isOpen={isModalOpen}
-        onClose={() => {
-          setIsModalOpen(false);
-          setPendingStatusChange(null);
-        }}
-        onSubmit={handleCommentSubmit}
-        statusChange={pendingStatusChange?.type === "status"}
-      />
-      <CommentViewModal
-        isOpen={isCommentModalOpen}
-        onClose={() => setIsCommentModalOpen(false)}
-        userComment={selectedComments.user}
-        adminComment={selectedComments.admin}
-        userCommentTime={selectedComments.userTime}
-        adminCommentTime={selectedComments.adminTime}
-      />
-      <EmailDetailsModal
-        isOpen={emailDetailsModal}
-        onClose={() => setEmailDetailsModal(false)}
-        emailData={emailDetails}
-      />
     </div>
   );
 }

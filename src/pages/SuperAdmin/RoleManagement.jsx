@@ -8,6 +8,12 @@ function RoleManagement() {
 
   const permissionOptions = ['Verifier', 'TruthScore', 'Analyzer', 'Reporter'];
 
+  const getSelectedPermissionsText = () => {
+    if (permissions.length === 0) return 'Select Permissions';
+    if (permissions.length <= 2) return permissions.join(', ');
+    return `${permissions.length} permissions selected`;
+  };
+
   const handlePermissionToggle = (permission) => {
     if (permissions.includes(permission)) {
       setPermissions(permissions.filter(p => p !== permission));
@@ -69,6 +75,48 @@ function RoleManagement() {
                 />
               </div>
               <div className="space-y-2">
+                <label className="text-gray-700 dark:text-gray-300 text-sm">Permissions</label>
+                <div className="relative">
+                  <button
+                    type="button"
+                    className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 p-3 rounded-lg text-gray-900 dark:text-white text-left focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 flex justify-between items-center"
+                    onClick={() => document.getElementById('permissionDropdown').classList.toggle('hidden')}
+                  >
+                    <span className="truncate">{getSelectedPermissionsText()}</span>
+                    <svg className="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                  <div
+                    id="permissionDropdown"
+                    className="absolute hidden mt-2 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl z-50 max-h-48 overflow-y-auto"
+                  >
+                    {permissionOptions.map((permission) => (
+                      <label
+                        key={permission}
+                        className="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer text-gray-900 dark:text-white border-b border-gray-200 dark:border-gray-600 last:border-0"
+                      >
+                        <input
+                          type="checkbox"
+                          checked={permissions.includes(permission)}
+                          onChange={() => handlePermissionToggle(permission)}
+                          className="mr-3 h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-blue-500 focus:ring-blue-500"
+                        />
+                        <span className="flex-1">{permission}</span>
+                        {permissions.includes(permission) && (
+                          <svg className="w-5 h-5 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                          </svg>
+                        )}
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-3 gap-8 mb-8">
+              <div className="space-y-2">
                 <label className="text-gray-700 dark:text-gray-300 text-sm">Designation</label>
                 <input
                   type="text"
@@ -76,9 +124,6 @@ function RoleManagement() {
                   className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 p-3 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                 />
               </div>
-            </div>
-
-            <div className="grid grid-cols-3 gap-8 mb-8">
               <div className="space-y-2">
                 <label className="text-gray-700 dark:text-gray-300 text-sm">Air Command</label>
                 <input
@@ -94,34 +139,6 @@ function RoleManagement() {
                   className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 p-3 rounded-lg text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
                   rows="1"
                 />
-              </div>
-              <div className="space-y-2">
-                <label className="text-gray-700 dark:text-gray-300 text-sm">Permissions</label>
-                <div className="relative">
-                  <button
-                    type="button"
-                    className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 p-3 rounded-lg text-gray-900 dark:text-white text-left focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300"
-                    onClick={() => document.getElementById('permissionDropdown').classList.toggle('hidden')}
-                  >
-                    Select Permissions
-                  </button>
-                  <div
-                    id="permissionDropdown"
-                    className="absolute hidden mt-2 w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg shadow-xl z-50"
-                  >
-                    {permissionOptions.map((permission) => (
-                      <label key={permission} className="flex items-center p-3 hover:bg-gray-100 dark:hover:bg-gray-600 cursor-pointer text-gray-900 dark:text-white">
-                        <input
-                          type="checkbox"
-                          checked={permissions.includes(permission)}
-                          onChange={() => handlePermissionToggle(permission)}
-                          className="mr-3 h-4 w-4 rounded border-gray-300 dark:border-gray-600 text-blue-500 focus:ring-blue-500"
-                        />
-                        {permission}
-                      </label>
-                    ))}
-                  </div>
-                </div>
               </div>
             </div>
 
