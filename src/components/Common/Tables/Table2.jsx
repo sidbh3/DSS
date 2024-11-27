@@ -380,14 +380,14 @@ function Table2({
         ) : (
           <table className="min-w-full">
             <thead>
-              <tr className="bg-primary dark:bg-gray-800">
+              <tr className="bg-secondary dark:bg-gray-800">
                 {columns
                   .filter((col) => visibleColumns[col.accessor])
                   .map((column) => (
                     <th
                       key={column.accessor}
                       onClick={() => handleSort(column.accessor)}
-                      className="px-4 py-3 text-center text-white uppercase text-xs border min-w-28 cursor-pointer"
+                      className="px-4 py-3 text-center text-white uppercase text-xs  min-w-28 cursor-pointer"
                     >
                       <div className="flex items-center justify-center gap-2">
                         {column.Header}

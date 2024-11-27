@@ -23,20 +23,47 @@ function ContentManagement() {
     fetchLicensesData();
   }, []);
 
-  const tabData = [{
-    // label: "Documents",
-    headers: ["starred", "sr_no", "document_name", "origin", "type", "category", "upload_date"],
-    headerLabels: ["", "Sr. No", "Document Name", "Origin", "Type", "Category", "Upload Date"],
-    data: licenseData?.map((item) => ({
-      starred: <FaStar className={`text-lg cursor-pointer ${item.starred ? 'text-yellow-400' : 'text-gray-300 dark:text-gray-600'}`} />,
-      sr_no: item.sr_no,
-      document_name: item.report_name,
-      origin: item.origin,
-      type: item.type || "Document",
-      category: item.category,
-      upload_date: item.upload_date
-    })) || []
-  }];
+  const tabData = [
+    {
+      // label: "Documents",
+      headers: [
+        "starred",
+        "sr_no",
+        "document_name",
+        "origin",
+        "type",
+        "category",
+        "upload_date",
+      ],
+      headerLabels: [
+        "",
+        "Sr. No",
+        "Document Name",
+        "Origin",
+        "Type",
+        "Category",
+        "Upload Date",
+      ],
+      data:
+        licenseData?.map((item) => ({
+          starred: (
+            <FaStar
+              className={`text-lg cursor-pointer ${
+                item.starred
+                  ? "text-yellow-400"
+                  : "text-gray-300 dark:text-gray-600"
+              }`}
+            />
+          ),
+          sr_no: item.sr_no,
+          document_name: item.report_name,
+          origin: item.origin,
+          type: item.type || "Document",
+          category: item.category,
+          upload_date: item.upload_date,
+        })) || [],
+    },
+  ];
 
   return (
     <div className="w-full">
@@ -52,8 +79,6 @@ function ContentManagement() {
 }
 
 export default ContentManagement;
-
-
 
 // import { useEffect, useState } from "react";
 // import Table2 from "../../components/Common/Tables/Table2";
