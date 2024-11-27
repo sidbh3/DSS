@@ -168,9 +168,6 @@
 
 // export default SuperUserDashboard;
 
-
-
-
 import { useEffect, useState } from "react";
 import Table from "../../components/Common/Tables/Table";
 import { generateDummyLicenseData } from "../../dummyDataGenerator";
@@ -201,39 +198,47 @@ function SystemUserDashboard() {
       label: "Generated",
       headers: ["Sr. No.", "Report Name", "Origin", "Upload Date", "Category"],
       data: licenseData
-        ?.filter((item) => !item.allocated_to && (!item.plugins || item.plugins.length === 0))
+        ?.filter(
+          (item) =>
+            !item.allocated_to && (!item.plugins || item.plugins.length === 0)
+        )
         ?.map((item) => ({
           sr_no: item.sr_no,
           report_name: item.report_name,
           origin: item.origin,
           upload_date: item.upload_date,
-          category: item.category
+          category: item.category,
         })),
     },
     {
       label: "OSINT",
       headers: ["Sr. No.", "Report Name", "Origin", "Upload Date", "Category"],
       data: licenseData
-        ?.filter((item) => item.allocated_to && item.plugins && item.plugins.length > 0)
+        ?.filter(
+          (item) => item.allocated_to && item.plugins && item.plugins.length > 0
+        )
         ?.map((item) => ({
           sr_no: item.sr_no,
           report_name: item.report_name,
           origin: item.origin,
           upload_date: item.upload_date,
-          category: item.category
+          category: item.category,
         })),
     },
     {
       label: "Confidential",
       headers: ["Sr. No.", "Report Name", "Origin", "Upload Date", "Category"],
       data: licenseData
-        ?.filter((item) => item.allocated_to && (!item.plugins || item.plugins.length === 0))
+        ?.filter(
+          (item) =>
+            item.allocated_to && (!item.plugins || item.plugins.length === 0)
+        )
         ?.map((item) => ({
           sr_no: item.sr_no,
           report_name: item.report_name,
           origin: item.origin,
           upload_date: item.upload_date,
-          category: item.category
+          category: item.category,
         })),
     },
     {
@@ -244,7 +249,7 @@ function SystemUserDashboard() {
         report_name: item.report_name,
         origin: item.origin,
         upload_date: item.upload_date,
-        category: item.category
+        category: item.category,
       })),
     },
   ];
