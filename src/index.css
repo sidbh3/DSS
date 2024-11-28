@@ -6,7 +6,7 @@
   :root {
     --background: 0 0% 100%;
     /* Your background color (#ffffff) */
-    --foreground: 192 71% 84%;
+    --foreground: 0  0 0%;
     /* Your foreground color (#BBEAF5) */
     --primary: 227 48% 44%;
     /* Your primary color (#3749A6) */

@@ -17,7 +17,6 @@ import UserDashboard from "../pages/User/UserDashboard";
 import ContentManagement from "../pages/SuperAdmin/ContentManagement";
 import DataAnalysis from "../pages/SuperAdmin/DataAnalysis";
 import RoleManagement from "../pages/SuperAdmin/RoleManagement";
-import UserManagement from "../pages/SuperAdmin/UserManagement";
 import GenerateReports from "../pages/SystemUser/GenerateReports";
 import Starred from "../pages/SystemUser/Starred";
 import UploadDocuments from "../pages/SystemUser/UploadDocuments";
@@ -27,6 +26,9 @@ import ViewSymbols from "../pages/SystemUser/ViewSymbols";
 import Logout from "../pages/Logout";
 import MapPage from "../pages/User/MapPage";
 import SupportInquires from "../pages/SuperAdmin/SupportInquires";
+import NewUser from "../pages/SuperAdmin/UserManagent/NewUser";
+import ExistingUser from "../pages/SuperAdmin/UserManagent/ExistingUser";
+import UserManagement from "../pages/SuperAdmin/UserManagent/UserManagement";
 
 const AppRoutes = () => {
   // const { role } = useAuth();
@@ -45,6 +47,8 @@ const AppRoutes = () => {
            <Route path="/role-management" element={<ProtectedRoute><DashboardLayout><RoleManagement /></DashboardLayout></ProtectedRoute>} />
            <Route path="/support-inquiries" element={<ProtectedRoute><DashboardLayout><SupportInquires /></DashboardLayout></ProtectedRoute>} />
            <Route path="/user-management" element={<ProtectedRoute><DashboardLayout><UserManagement /></DashboardLayout></ProtectedRoute>} />
+           <Route path="/new-user" element={<ProtectedRoute><DashboardLayout><NewUser /></DashboardLayout></ProtectedRoute>} />
+           <Route path="/existing-user" element={<ProtectedRoute><DashboardLayout><ExistingUser /></DashboardLayout></ProtectedRoute>} />
            <Route path="/profile" element={<ProtectedRoute><DashboardLayout><Profile /></DashboardLayout></ProtectedRoute>} />
            <Route path="/settings" element={<ProtectedRoute><DashboardLayout><Settings /></DashboardLayout></ProtectedRoute>} />
          </>
