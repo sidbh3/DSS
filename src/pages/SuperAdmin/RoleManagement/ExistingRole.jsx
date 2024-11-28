@@ -66,38 +66,6 @@ const data = [
     designation: "Squadron Leader",
     lastUpdated: "2024-01-08T12:25:00",
   },
-  {
-    empId: "IAF1005",
-    firstName: "Arun",
-    lastName: "Verma",
-    email: "arun.verma@iaf.gov.in",
-    designation: "Air Commodore",
-    lastUpdated: "2024-01-11T13:40:00",
-  },
-  {
-    empId: "IAF1006",
-    firstName: "Sunita",
-    lastName: "Reddy",
-    email: "sunita.reddy@iaf.gov.in",
-    designation: "Flying Officer",
-    lastUpdated: "2024-01-10T10:05:00",
-  },
-  {
-    empId: "IAF1007",
-    firstName: "Karthik",
-    lastName: "Iyer",
-    email: "karthik.iyer@iaf.gov.in",
-    designation: "Air Marshal",
-    lastUpdated: "2024-01-09T15:55:00",
-  },
-  {
-    empId: "IAF1008",
-    firstName: "Zara",
-    lastName: "Khan",
-    email: "zara.khan@iaf.gov.in",
-    designation: "Squadron Leader",
-    lastUpdated: "2024-01-08T12:25:00",
-  },
 ];
 
 const columns = [
@@ -135,7 +103,7 @@ const columns = [
   },
 ];
 
-function ExistingUser() {
+function ExistingRole() {
   const [userData, setUserData] = React.useState([]);
 
   useEffect(() => {
@@ -160,4 +128,4 @@ function ExistingUser() {
   );
 }
 
-export default ExistingUser;
+export default ExistingRole;

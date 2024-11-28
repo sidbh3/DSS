@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import {
   FaSearch,
   FaTimes,
@@ -7,11 +7,10 @@ import {
   FaEye,
 } from "react-icons/fa";
 import { IoFilterSharp } from "react-icons/io5";
-import { FaDownload } from "react-icons/fa";
+import { BsThreeDotsVertical } from "react-icons/bs";
 import { toast } from "react-toastify";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import LoaderComponent from "../LoaderComponent";
-import { fetchEmailDetails } from "../../../Api/api";
 
 function DateFormatter({ dateString }) {
   const formatDate = (dateString) => {
@@ -44,128 +43,49 @@ function DateFormatter({ dateString }) {
   return <span>{formatDate(dateString)}</span>;
 }
 
-const AdminCommentModal = ({ isOpen, onClose, onSubmit, statusChange }) => {
-  const [comment, setComment] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const handleSubmit = async () => {
-    if (!comment.trim()) {
-      toast.error("Please enter a comment before submitting");
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      await onSubmit(comment);
-      setComment("");
-      onClose();
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  return (
-    <>
-      {isOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-background dark:bg-gray-800 p-6 rounded-lg shadow-xl w-[400px] animate-in fade-in-0 zoom-in-95">
-            <h3 className="text-lg font-semibold mb-4 text-secondary-foreground">
-              {statusChange ? "Update Status & Comment" : "Add Admin Comment"}
-            </h3>
-            <textarea
-              value={comment}
-              required
-              onChange={(e) => setComment(e.target.value)}
-              className="w-full p-3 border border-gray-500 rounded-md bg-background dark:bg-gray-800 text-secondary-foreground resize-none"
-              placeholder="Enter your comment..."
-              rows={4}
-            />
-            <div className="flex justify-end gap-3 mt-4">
-              <button
-                onClick={onClose}
-                className="px-4 py-2 rounded-md bg-destructive text-white hover:bg-destructive/80"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleSubmit}
-                disabled={isSubmitting}
-                className="flex gap-2 items-center px-4 py-2 rounded-md bg-primary text-white hover:bg-primary/90"
-              >
-                {isSubmitting ? (
-                  <>
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                    Submitting...
-                  </>
-                ) : (
-                  "Submit"
-                )}
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </>
-  );
-};
-
-const getStatusColor = (status) => {
-  if (!status) return "bg-gray-200";
-  switch (status.toLowerCase()) {
-    case "completed":
-      return "bg-green-500";
-    case "processing":
-      return "bg-yellow-500";
-    case "failed":
-      return "bg-red-500";
-    case "safe":
-      return "bg-green-500 text-background";
-    case "unsafe":
-      return "bg-red-500 text-background";
-    case "pending":
-      return "bg-blue-500 text-background";
-    default:
-      return "bg-gray-500";
-  }
-};
-
-const getThreatScoreColor = (score) => {
-  if (score >= 80) return "text-red-600 font-bold";
-  if (score >= 60) return "text-orange-500 font-semibold";
-  if (score >= 40) return "text-yellow-500";
-  return "text-green-500";
-};
-
-function Table2({
-  data,
-  columns,
-  onStatusChange,
-  onCommentAdd,
-  loading,
-  error,
-}) {
+function Table2({ data, columns, loading, error }) {
   const [searchTerm, setSearchTerm] = useState("");
+  const [activeRow, setActiveRow] = useState(null);
   const [filters, setFilters] = useState({});
   const [showColumnToggle, setShowColumnToggle] = useState(false);
   const [visibleColumns, setVisibleColumns] = useState(
     Object.fromEntries(columns.map((col) => [col.accessor, true]))
   );
   const [currentPage, setCurrentPage] = useState(1);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
-  const [selectedComments, setSelectedComments] = useState({
-    user: "",
-    admin: "",
-  });
-  const [pendingStatusChange, setPendingStatusChange] = useState(null);
   const [sortConfig, setSortConfig] = useState({
     key: null,
     direction: "asc",
   });
-  const [emailDetailsModal, setEmailDetailsModal] = useState(false);
-  const [emailDetails, setEmailDetails] = useState(null);
 
   const itemsPerPage = 10;
+
+  const handleView = (row) => {
+    // Implement view logic here
+    toast.info("Viewing row:", row.empId);
+  };
+
+  const handleEdit = (row) => {
+    // Implement edit logic here
+    toast.info("Editing row:", row.empId);
+  };
+
+  const handleDelete = (row) => {
+    // Implement delete logic here
+    toast.info("Deleting row:", row.empId);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (activeRow && !event.target.closest(".actions-menu")) {
+        setActiveRow(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [activeRow]);
 
   const handleSort = (accessor) => {
     setSortConfig((prevConfig) => ({
@@ -221,68 +141,11 @@ function Table2({
     currentPage * itemsPerPage
   );
 
-  const handleViewComments = (row) => {
-    setSelectedComments({
-      user: row.user_comment,
-      admin: row.admin_comment,
-    });
-    setIsCommentModalOpen(true);
-  };
-
-  const handleViewEmailDetails = async (row) => {
-    try {
-      const response = await fetchEmailDetails(row.msg_id);
-      const data = await response.json();
-      if (response.ok) {
-        setEmailDetails(data);
-        setEmailDetailsModal(true);
-      } else {
-        toast.error("Failed to fetch email details");
-      }
-    } catch (error) {
-      toast.error("Error fetching email details");
-    }
-  };
-
-  const handleStatusChange = (row, newStatus) => {
-    // setPendingStatusChange({ row, newStatus, type: "status" });
-    // setIsModalOpen(true);
-    // Directly call onStatusChange without opening modal
-    onStatusChange(row.id, newStatus);
-  };
-
-  const handleCommentSubmit = async (comment) => {
-    if (!pendingStatusChange) return;
-
-    const { row, newStatus, type } = pendingStatusChange;
-
-    if (type === "status") {
-      await onStatusChange(row.id, newStatus, comment);
-    } else {
-      await onCommentAdd(row.id, comment);
-    }
-
-    setIsModalOpen(false);
-    setPendingStatusChange(null);
-  };
-
-  const handleCommentOnly = (row) => {
-    setPendingStatusChange({ row, type: "comment" });
-    setIsModalOpen(true);
-  };
-
   const toggleColumnVisibility = (accessor) => {
     setVisibleColumns((prev) => ({
       ...prev,
       [accessor]: !prev[accessor],
     }));
-  };
-
-  const handleDownload = (row) => {
-    toast.success(`Downloading data for message ID: ${row.message_id}`);
-  };
-  const handleEmlFileDownload = (row) => {
-    toast.success(`Downloading data for message ID: ${row.id}`);
   };
 
   const renderPaginationButtons = () => {
@@ -415,120 +278,56 @@ function Table2({
                         key={column.accessor}
                         className="px-6 py-2 whitespace-nowrap text-center text-secondary-foreground text-sm"
                       >
-                        {column.accessor === "status" ? (
-                          <div className="flex items-center justify-center gap-2">
-                            {row[column.accessor] === "safe" ||
-                            row[column.accessor] === "unsafe" ||
-                            row[column.accessor] === "pending" ? (
-                              <>
-                                <select
-                                  value={row[column.accessor]}
-                                  onChange={(e) =>
-                                    handleStatusChange(row, e.target.value)
-                                  }
-                                  className={`px-2 py-1 leading-5 font-semibold rounded-md outline-none cursor-pointer ${getStatusColor(
-                                    row[column.accessor]
-                                  )} text-white`}
-                                >
-                                  <option value="safe">Safe</option>
-                                  <option value="unsafe">Unsafe</option>
-                                  <option value="pending">Pending</option>
-                                </select>
-                                <button
-                                  onClick={() => handleCommentOnly(row)}
-                                  className="bg-primary hover:bg-primary/90 text-white p-1 rounded-md"
-                                  title="Add Comment"
-                                >
-                                  💬
-                                </button>
-                              </>
-                            ) : (
-                              <span
-                                className={`px-2 py-1 leading-5 font-semibold rounded-md dark:text-black ${getStatusColor(
-                                  row[column.accessor]
-                                )}`}
-                              >
-                                {row[column.accessor]}
-                              </span>
-                            )}
-                          </div>
-                        ) : column.accessor === "export" ? (
-                          <button
-                            onClick={() => handleDownload(row)}
-                            className="bg-primary hover:bg-secondary text-white font-semibold py-2 px-4 rounded-md inline-flex items-center"
-                          >
-                            <FaDownload className="mr-2" />
-                            <span>Download</span>
-                          </button>
-                        ) : column.accessor === "eml_file_name" ? (
-                          <button
-                            onClick={() => handleViewEmailDetails(row)}
-                            className="bg-primary hover:bg-secondary text-white font-semibold py-2 px-4 rounded-md inline-flex items-center"
-                          >
-                            <FaEye className="mr-2" />
-                            <span>View</span>
-                          </button>
-                        ) : column.accessor === "user_comment" ? (
-                          <div className="flex items-center justify-center gap-2">
-                            <span className="">
-                              {row[column.accessor]
-                                ?.split(" ")
-                                .slice(0, 4)
-                                .join(" ")}
-                              {row[column.accessor]?.split(" ").length > 4 &&
-                                "..."}
-                            </span>
-                            <button
-                              onClick={() => handleViewComments(row)}
-                              className="text-primary text-xs cursor-pointer underline"
-                            >
-                              View
-                            </button>
-                          </div>
-                        ) : column.accessor === "urls" ? (
-                          <button
-                            onClick={() => handleEmlFileDownload(row)}
-                            className="bg-primary hover:bg-secondary text-white font-semibold py-2 px-4 rounded-md inline-flex items-center"
-                          >
-                            <FaEye className="mr-2" />
-                            <span>View</span>
-                          </button>
-                        ) : column.accessor === "attachments" ? (
-                          <button
-                            onClick={() => handleEmlFileDownload(row)}
-                            className="bg-primary hover:bg-secondary text-white font-semibold py-2 px-4 rounded-md inline-flex items-center"
-                          >
-                            <FaEye className="mr-2" />
-                            <span>View</span>
-                          </button>
-                        ) : column.accessor === "cdr_file" ? (
-                          <button
-                            onClick={() => handleEmlFileDownload(row)}
-                            className="bg-primary hover:bg-secondary text-white font-semibold py-2 px-4 rounded-md inline-flex items-center"
-                          >
-                            <FaEye className="mr-2" />
-                            <span>View</span>
-                          </button>
-                        ) : column.accessor === "threat_score" ? (
-                          <span
-                            className={getThreatScoreColor(
-                              row[column.accessor]
-                            )}
-                          >
-                            {row[column.accessor]}
-                          </span>
-                        ) : column.accessor.includes("started_on") ||
-                          column.accessor.includes("create_time") ||
-                          column.accessor.includes("created_at") ||
-                          column.accessor.includes("updated_at") ||
-                          column.accessor.includes("completed_on") ? (
+                        {column?.accessor?.includes("lastUpdated") ? (
                           <DateFormatter dateString={row[column.accessor]} />
-                        ) : column.accessor.includes("sr_no") ? (
+                        ) : column?.accessor?.includes("actions") ? (
+                          <div className="relative">
+                            <button
+                              onClick={() => setActiveRow(row.empId)}
+                              className="p-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700"
+                            >
+                              <BsThreeDotsVertical className="w-5 h-5" />
+                            </button>
+
+                            {activeRow === row.empId && (
+                              <div className="absolute right-0 mt-2 w-20 bg-white border rounded-md shadow-lg z-50 overflow-hidden">
+                                <div className="flex flex-col gap-1">
+                                  <button
+                                    onClick={() => {
+                                      handleView(row);
+                                      setActiveRow(null);
+                                    }}
+                                    className="w-full text-left px-3 py-1 hover:bg-gray-200 dark:hover:bg-gray-700 text-blue-600 hover:text-blue-800"
+                                  >
+                                    View
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      handleEdit(row);
+                                      setActiveRow(null);
+                                    }}
+                                    className="w-full text-left px-3 py-1 hover:bg-gray-200 dark:hover:bg-gray-700 text-green-600 hover:text-green-800"
+                                  >
+                                    Edit
+                                  </button>
+                                  <button
+                                    onClick={() => {
+                                      handleDelete(row);
+                                      setActiveRow(null);
+                                    }}
+                                    className="w-full text-left px-3 py-1 hover:bg-gray-200 dark:hover:bg-gray-700 text-red-600 hover:text-red-800"
+                                  >
+                                    Delete
+                                  </button>
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        ) : column?.accessor?.includes("sr_no") ? (
                           <span className="text-secondary-foreground">
                             {(currentPage - 1) * itemsPerPage + rowIndex + 1}
                           </span>
                         ) : (
-                          // Add the null checking logic here
                           (() => {
                             const value = row[column.accessor];
                             const cellValue =

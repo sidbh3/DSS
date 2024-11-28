@@ -16,7 +16,6 @@ import SuperUserDashboard from "../pages/SystemUser/SystemUserDashboard";
 import UserDashboard from "../pages/User/UserDashboard";
 import ContentManagement from "../pages/SuperAdmin/ContentManagement";
 import DataAnalysis from "../pages/SuperAdmin/DataAnalysis";
-import RoleManagement from "../pages/SuperAdmin/RoleManagement";
 import GenerateReports from "../pages/SystemUser/GenerateReports";
 import Starred from "../pages/SystemUser/Starred";
 import UploadDocuments from "../pages/SystemUser/UploadDocuments";
@@ -29,6 +28,9 @@ import SupportInquires from "../pages/SuperAdmin/SupportInquires";
 import NewUser from "../pages/SuperAdmin/UserManagent/NewUser";
 import ExistingUser from "../pages/SuperAdmin/UserManagent/ExistingUser";
 import UserManagement from "../pages/SuperAdmin/UserManagent/UserManagement";
+import RoleManagement from "../pages/SuperAdmin/RoleManagement/RoleManagement";
+import NewRole from "../pages/SuperAdmin/RoleManagement/NewRole";
+import ExistingRole from "../pages/SuperAdmin/RoleManagement/ExistingRole";
 
 const AppRoutes = () => {
   // const { role } = useAuth();
@@ -45,6 +47,8 @@ const AppRoutes = () => {
            <Route path="/content-management" element={<ProtectedRoute><DashboardLayout><ContentManagement /></DashboardLayout></ProtectedRoute>} />
            <Route path="/data-analysis" element={<ProtectedRoute><DashboardLayout><DataAnalysis /></DashboardLayout></ProtectedRoute>} />
            <Route path="/role-management" element={<ProtectedRoute><DashboardLayout><RoleManagement /></DashboardLayout></ProtectedRoute>} />
+           <Route path="/new-role" element={<ProtectedRoute><DashboardLayout><NewRole /></DashboardLayout></ProtectedRoute>} />
+           <Route path="/existing-role" element={<ProtectedRoute><DashboardLayout><ExistingRole /></DashboardLayout></ProtectedRoute>} />
            <Route path="/support-inquiries" element={<ProtectedRoute><DashboardLayout><SupportInquires /></DashboardLayout></ProtectedRoute>} />
            <Route path="/user-management" element={<ProtectedRoute><DashboardLayout><UserManagement /></DashboardLayout></ProtectedRoute>} />
            <Route path="/new-user" element={<ProtectedRoute><DashboardLayout><NewUser /></DashboardLayout></ProtectedRoute>} />

@@ -19,7 +19,7 @@ function NewUser() {
     airCommand: "",
     activationDate: "",
     identityProof: null,
-    permissions: [],
+    permissions: "",
   });
 
   // Error state
@@ -54,8 +54,7 @@ function NewUser() {
     if (!formData.airCommand) newErrors.airCommand = "Air Command is required";
     if (!formData.activationDate)
       newErrors.activationDate = "Activation date is required";
-    if (formData.permissions.length === 0)
-      newErrors.permissions = "At least one permission is required";
+    if (!formData.permissions) newErrors.permissions = "Permission is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -85,7 +84,6 @@ function NewUser() {
       const updatedPermissions = prev.permissions.includes(permission)
         ? prev.permissions.filter((p) => p !== permission)
         : [...prev.permissions, permission];
-
       return {
         ...prev,
         permissions: updatedPermissions,
@@ -139,7 +137,9 @@ function NewUser() {
         >
           {!previewMode ? (
             <>
+              {/* Personal Information Section */}
               <div className="grid grid-cols-3 gap-8 mb-8">
+                {/* First Name */}
                 <div className="space-y-2">
                   <label className="text-gray-700 dark:text-gray-300 text-sm">
                     First Name
@@ -161,6 +161,7 @@ function NewUser() {
                   )}
                 </div>
 
+                {/* Last Name */}
                 <div className="space-y-2">
                   <label className="text-gray-700 dark:text-gray-300 text-sm">
                     Last Name
@@ -182,6 +183,7 @@ function NewUser() {
                   )}
                 </div>
 
+                {/* Email */}
                 <div className="space-y-2">
                   <label className="text-gray-700 dark:text-gray-300 text-sm">
                     Email
@@ -202,7 +204,9 @@ function NewUser() {
                 </div>
               </div>
 
+              {/* Account Information Section */}
               <div className="grid grid-cols-3 gap-8 mb-8">
+                {/* Username */}
                 <div className="space-y-2">
                   <label className="text-gray-700 dark:text-gray-300 text-sm">
                     Username
@@ -210,6 +214,7 @@ function NewUser() {
                   <input
                     type="text"
                     name="username"
+                    value={formData.username}
                     onChange={handleInputChange}
                     placeholder="Enter username"
                     className={`w-full bg-white dark:bg-gray-700 border ${
@@ -222,6 +227,8 @@ function NewUser() {
                     </p>
                   )}
                 </div>
+
+                {/* Password */}
                 <div className="space-y-2">
                   <label className="text-gray-700 dark:text-gray-300 text-sm">
                     Password
@@ -229,6 +236,7 @@ function NewUser() {
                   <input
                     type="password"
                     name="password"
+                    value={formData.password}
                     onChange={handleInputChange}
                     placeholder="Enter password"
                     className={`w-full bg-white dark:bg-gray-700 border ${
@@ -241,6 +249,8 @@ function NewUser() {
                     </p>
                   )}
                 </div>
+
+                {/* Employee ID */}
                 <div className="space-y-2">
                   <label className="text-gray-700 dark:text-gray-300 text-sm">
                     Employee ID
@@ -261,7 +271,9 @@ function NewUser() {
                 </div>
               </div>
 
+              {/* Professional Information Section */}
               <div className="grid grid-cols-3 gap-8 mb-8">
+                {/* Designation */}
                 <div className="space-y-2">
                   <label className="text-gray-700 dark:text-gray-300 text-sm">
                     Designation
@@ -288,6 +300,7 @@ function NewUser() {
                   )}
                 </div>
 
+                {/* Category */}
                 <div className="space-y-2">
                   <label className="text-gray-700 dark:text-gray-300 text-sm">
                     Category
@@ -314,6 +327,7 @@ function NewUser() {
                   )}
                 </div>
 
+                {/* Air Command */}
                 <div className="space-y-2">
                   <label className="text-gray-700 dark:text-gray-300 text-sm">
                     Air Command
@@ -341,7 +355,9 @@ function NewUser() {
                 </div>
               </div>
 
+              {/* Activation Date, Permissions, Identity Proof Row */}
               <div className="grid grid-cols-3 gap-8 mb-8">
+                {/* Activation Date */}
                 <div className="space-y-2">
                   <label className="text-gray-700 dark:text-gray-300 text-sm">
                     Activation Date
@@ -364,53 +380,53 @@ function NewUser() {
                     </p>
                   )}
                 </div>
-              </div>
 
-              <div className="mb-8">
-                <label className="text-gray-700 dark:text-gray-300 text-sm block mb-2">
-                  Permissions
-                </label>
-                <div className="grid grid-cols-2 gap-4">
-                  {permissionOptions.map((permission) => (
-                    <label
-                      key={permission}
-                      className="flex items-center p-3 bg-white dark:bg-gray-700 rounded-lg border border-gray-300 dark:border-gray-600"
-                    >
-                      <input
-                        type="checkbox"
-                        checked={formData.permissions.includes(permission)}
-                        onChange={() => handlePermissionToggle(permission)}
-                        className="mr-3 h-4 w-4 rounded border-gray-300 text-blue-500 focus:ring-blue-500"
-                      />
-                      <span className="text-gray-700 dark:text-gray-300">
-                        {permission}
-                      </span>
-                    </label>
-                  ))}
+                {/* Permissions */}
+                <div className="space-y-2">
+                  <label className="text-gray-700 dark:text-gray-300 text-sm">
+                    Permissions
+                  </label>
+                  <select
+                    name="permissions"
+                    value={formData.permissions}
+                    onChange={handleInputChange}
+                    className={`w-full bg-white dark:bg-gray-700 border ${
+                      errors.permissions ? "border-red-500" : "border-gray-300"
+                    } dark:border-gray-600 p-3 rounded-lg`}
+                  >
+                    <option value="">Select Permission</option>
+                    {permissionOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.permissions && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.permissions}
+                    </p>
+                  )}
                 </div>
-                {errors.permissions && (
-                  <p className="text-red-500 text-xs mt-1">
-                    {errors.permissions}
+
+                {/* Identity Proof */}
+                <div className="space-y-2">
+                  <label className="text-gray-700 dark:text-gray-300 text-sm">
+                    Identity Proof
+                  </label>
+                  <input
+                    type="file"
+                    onChange={handleFileChange}
+                    accept="image/*,.pdf"
+                    className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 p-3 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
+                  />
+                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                    Upload valid government ID proof (PDF or Image)
                   </p>
-                )}
+                </div>
               </div>
 
-              <div className="mb-8">
-                <label className="text-gray-700 dark:text-gray-300 text-sm block mb-2">
-                  Identity Proof
-                </label>
-                <input
-                  type="file"
-                  onChange={handleFileChange}
-                  accept="image/*,.pdf"
-                  className="w-full bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 p-3 rounded-lg file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
-                />
-                <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                  Upload valid government ID proof (PDF or Image)
-                </p>
-              </div>
-
-              <div className="flex justify-end gap-4">
+              {/* Action Buttons */}
+              <div className="flex justify-end gap-4 mt-28">
                 <button
                   type="button"
                   onClick={resetForm}
@@ -423,7 +439,7 @@ function NewUser() {
                   onClick={togglePreview}
                   className="px-6 py-3 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700"
                 >
-                  {previewMode ? "Edit" : "Preview"}
+                  Preview
                 </button>
                 <button
                   type="submit"
@@ -444,7 +460,7 @@ function NewUser() {
                       className="grid grid-cols-2 gap-4 border-b border-gray-200 dark:border-gray-700 pb-4"
                     >
                       <span className="text-gray-600 dark:text-gray-400 capitalize">
-                        {key}
+                        {key.replace(/([A-Z])/g, " $1").trim()}
                       </span>
                       <span className="text-gray-900 dark:text-white">
                         {Array.isArray(value) ? value.join(", ") : value || "-"}
@@ -452,6 +468,14 @@ function NewUser() {
                     </div>
                   )
               )}
+              <div className="flex justify-end mt-6">
+                <button
+                  onClick={togglePreview}
+                  className="px-6 py-3 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700"
+                >
+                  Edit
+                </button>
+              </div>
             </div>
           )}
         </form>
