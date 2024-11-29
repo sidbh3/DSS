@@ -302,7 +302,7 @@ function DataAnalysis() {
   return (
     <div className="w-full flex flex-col gap-8 bg-gray-50 dark:bg-gray-900">
       <h1 className="text-3xl font-bold text-gray-800 dark:text-white tracking-wide border-b border-gray-200 dark:border-gray-700 pb-4">
-      Starred
+        Starred
       </h1>
       <div>
         <Table2
