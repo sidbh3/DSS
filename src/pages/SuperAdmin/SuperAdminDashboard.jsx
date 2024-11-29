@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS } from "chart.js/auto";
-import { generateDashboardData } from "../../dummyDataGenerator";
+import { generateDashboardData } from "../../pages/SuperAdmin/dashboardDataGenerator";
 
 function SuperAdminDashboard() {
   const [dashboardData, setDashboardData] = useState({
@@ -38,7 +38,6 @@ function SuperAdminDashboard() {
     (item) => item.type === "data_record"
   ).length;
   const totalSystemUsers = dashboardData.systemMetrics.length;
-
   const barChartData = {
     labels: ["System Running", "Standard Users", "Data Records", "Total Users"],
     datasets: [
