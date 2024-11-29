@@ -34,7 +34,7 @@ import ExistingRole from "../pages/SuperAdmin/RoleManagement/ExistingRole";
 
 const AppRoutes = () => {
   // const { role } = useAuth();
-  const role="superadmin"
+  const role="systemuser"
   return (
     <Router>
       <Routes>
