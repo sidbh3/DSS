@@ -1,0 +1,21 @@
+{
+    "users": [
+      {
+        "empId": "IAF1001",
+        "firstName": "Rajesh",
+        "lastName": "Kumar",
+        "email": "rajesh.kumar@iaf.gov.in",
+        "designation": "Squadron Leader",
+        "lastUpdated": "2024-01-15T14:30:00"
+      },
+      {
+        "empId": "IAF1002",
+        "firstName": "Priya",
+        "lastName": "Sharma", 
+        "email": "priya.sharma@iaf.gov.in",
+        "designation": "Wing Commander",
+        "lastUpdated": "2024-01-14T09:15:00"
+      }
+    ]
+  }
+  

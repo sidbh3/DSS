@@ -16,7 +16,7 @@ const Header = () => {
   const { setTheme, theme } = useTheme();
 
   return (
-    <div className="w-full h-16 flex items-center justify-between px-6 dark:border-b bg-[#001F54] dark:bg-background dark:text-white shadow-md">
+    <div className="w-full h-16 flex items-center justify-between px-6 dark:border-b bg-[#001F54]  dark:text-white shadow-md">
   
       <div className="w-full">
         <div className="flex flex-col text-white">

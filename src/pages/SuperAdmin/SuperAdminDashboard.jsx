@@ -1,54 +1,72 @@
 import { useEffect, useState } from "react";
 import { Bar } from "react-chartjs-2";
 import { Pie } from "react-chartjs-2";
-import { Chart as ChartJS } from 'chart.js/auto';
-import { generateDummyLicenseData } from "../../dummyDataGenerator";
+import { Chart as ChartJS } from "chart.js/auto";
+import { generateDashboardData } from "../../dummyDataGenerator";
 
 function SuperAdminDashboard() {
-  const [licenseData, setLicenseData] = useState([]);
+  const [dashboardData, setDashboardData] = useState({
+    systemMetrics: [],
+    reports: [],
+  });
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  const fetchLicensesData = async () => {
+  const fetchDashboardData = async () => {
     try {
-      const dummyData = generateDummyLicenseData();
-      setLicenseData(dummyData);
+      const data = generateDashboardData();
+      setDashboardData(data);
     } catch (error) {
-      console.error("Failed to load license data:", error);
-      setError("Failed to load license data");
+      console.error("Failed to load dashboard data:", error);
+      setError("Failed to load dashboard data");
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchLicensesData();
+    fetchDashboardData();
   }, []);
 
-  const systemRunningCount = licenseData.filter(item => !item.allocated_to && (!item.plugins || item.plugins.length === 0)).length;
-  const standardUserCount = licenseData.filter(item => item.allocated_to && item.plugins && item.plugins.length > 0).length;
-  const dataRecordsCount = licenseData.filter(item => item.allocated_to && (!item.plugins || item.plugins.length === 0)).length;
-  const totalSystemUsers = licenseData.length;
+  const systemRunningCount = dashboardData.systemMetrics.filter(
+    (item) => item.type === "system_running"
+  ).length;
+  const standardUserCount = dashboardData.systemMetrics.filter(
+    (item) => item.type === "standard_user"
+  ).length;
+  const dataRecordsCount = dashboardData.systemMetrics.filter(
+    (item) => item.type === "data_record"
+  ).length;
+  const totalSystemUsers = dashboardData.systemMetrics.length;
 
   const barChartData = {
-    labels: ['System Running', 'Standard Users', 'Data Records', 'Total Users'],
-    datasets: [{
-      label: 'Statistics',
-      data: [systemRunningCount, standardUserCount, dataRecordsCount, totalSystemUsers],
-      backgroundColor: ['#4F46E5', '#10B981', '#F59E0B', '#6366F1'],
-      borderColor: ['#4338CA', '#059669', '#D97706', '#4F46E5'],
-      borderWidth: 1
-    }]
+    labels: ["System Running", "Standard Users", "Data Records", "Total Users"],
+    datasets: [
+      {
+        label: "Statistics",
+        data: [
+          systemRunningCount,
+          standardUserCount,
+          dataRecordsCount,
+          totalSystemUsers,
+        ],
+        backgroundColor: ["#4F46E5", "#10B981", "#F59E0B", "#6366F1"],
+        borderColor: ["#4338CA", "#059669", "#D97706", "#4F46E5"],
+        borderWidth: 1,
+      },
+    ],
   };
 
   const pieChartData = {
-    labels: ['System Running', 'Standard Users', 'Data Records'],
-    datasets: [{
-      data: [systemRunningCount, standardUserCount, dataRecordsCount],
-      backgroundColor: ['#4F46E5', '#10B981', '#F59E0B'],
-      borderColor: ['#4338CA', '#059669', '#D97706'],
-      borderWidth: 1
-    }]
+    labels: ["System Running", "Standard Users", "Data Records"],
+    datasets: [
+      {
+        data: [systemRunningCount, standardUserCount, dataRecordsCount],
+        backgroundColor: ["#4F46E5", "#10B981", "#F59E0B"],
+        borderColor: ["#4338CA", "#059669", "#D97706"],
+        borderWidth: 1,
+      },
+    ],
   };
 
   const chartOptions = {
@@ -56,36 +74,36 @@ function SuperAdminDashboard() {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'right',
+        position: "right",
         labels: {
           font: {
-            size: 13
+            size: 13,
           },
           padding: 20,
           boxWidth: 15,
-          color: 'rgb(156, 163, 175)'
-        }
-      }
+          color: "rgb(156, 163, 175)",
+        },
+      },
     },
     scales: {
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(156, 163, 175, 0.1)'
+          color: "rgba(156, 163, 175, 0.1)",
         },
         ticks: {
-          color: 'rgb(156, 163, 175)'
-        }
+          color: "rgb(156, 163, 175)",
+        },
       },
       x: {
         grid: {
-          display: false
+          display: false,
         },
         ticks: {
-          color: 'rgb(156, 163, 175)'
-        }
-      }
-    }
+          color: "rgb(156, 163, 175)",
+        },
+      },
+    },
   };
 
   const pieChartOptions = {
@@ -93,17 +111,17 @@ function SuperAdminDashboard() {
     maintainAspectRatio: false,
     plugins: {
       legend: {
-        position: 'right',
+        position: "right",
         labels: {
           font: {
-            size: 13
+            size: 13,
           },
           padding: 20,
           boxWidth: 15,
-          color: 'rgb(156, 163, 175)'
-        }
-      }
-    }
+          color: "rgb(156, 163, 175)",
+        },
+      },
+    },
   };
 
   return (
@@ -115,26 +133,42 @@ function SuperAdminDashboard() {
       <div className="grid grid-cols-4 gap-6">
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-all duration-300 hover:shadow-lg">
           <div className="flex flex-col">
-            <h3 className="text-gray-500 dark:text-gray-400 text-base font-medium mb-2">Total System Running</h3>
-            <p className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">{systemRunningCount}</p>
+            <h3 className="text-gray-500 dark:text-gray-400 text-base font-medium mb-2">
+              Total System Running
+            </h3>
+            <p className="text-3xl font-bold text-indigo-600 dark:text-indigo-400">
+              {systemRunningCount}
+            </p>
           </div>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-all duration-300 hover:shadow-lg">
           <div className="flex flex-col">
-            <h3 className="text-gray-500 dark:text-gray-400 text-base font-medium mb-2">Total Standard Users</h3>
-            <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">{standardUserCount}</p>
+            <h3 className="text-gray-500 dark:text-gray-400 text-base font-medium mb-2">
+              Total Standard Users
+            </h3>
+            <p className="text-3xl font-bold text-emerald-600 dark:text-emerald-400">
+              {standardUserCount}
+            </p>
           </div>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-all duration-300 hover:shadow-lg">
           <div className="flex flex-col">
-            <h3 className="text-gray-500 dark:text-gray-400 text-base font-medium mb-2">Total Data Records</h3>
-            <p className="text-3xl font-bold text-amber-600 dark:text-amber-400">{dataRecordsCount}</p>
+            <h3 className="text-gray-500 dark:text-gray-400 text-base font-medium mb-2">
+              Total Data Records
+            </h3>
+            <p className="text-3xl font-bold text-amber-600 dark:text-amber-400">
+              {dataRecordsCount}
+            </p>
           </div>
         </div>
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-6 transition-all duration-300 hover:shadow-lg">
           <div className="flex flex-col">
-            <h3 className="text-gray-500 dark:text-gray-400 text-base font-medium mb-2">Total System Users</h3>
-            <p className="text-3xl font-bold text-violet-600 dark:text-violet-400">{totalSystemUsers}</p>
+            <h3 className="text-gray-500 dark:text-gray-400 text-base font-medium mb-2">
+              Total System Users
+            </h3>
+            <p className="text-3xl font-bold text-violet-600 dark:text-violet-400">
+              {totalSystemUsers}
+            </p>
           </div>
         </div>
       </div>
@@ -142,7 +176,9 @@ function SuperAdminDashboard() {
       <div className="grid grid-cols-2 gap-8">
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8 transition-all duration-300 hover:shadow-lg">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Distribution Overview</h2>
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+              Distribution Overview
+            </h2>
             <div className="px-3 py-1 bg-indigo-50 dark:bg-indigo-900 text-indigo-700 dark:text-indigo-300 rounded-full text-sm font-medium">
               Statistics
             </div>
@@ -151,10 +187,12 @@ function SuperAdminDashboard() {
             <Bar data={barChartData} options={chartOptions} />
           </div>
         </div>
-       
+
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-md p-8 transition-all duration-300 hover:shadow-lg">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">Distribution Ratio</h2>
+            <h2 className="text-xl font-semibold text-gray-800 dark:text-white">
+              Distribution Ratio
+            </h2>
             <div className="px-3 py-1 bg-emerald-50 dark:bg-emerald-900 text-emerald-700 dark:text-emerald-300 rounded-full text-sm font-medium">
               Overview
             </div>

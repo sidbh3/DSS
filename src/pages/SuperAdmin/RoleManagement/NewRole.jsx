@@ -17,7 +17,7 @@ function NewRole() {
   const [errors, setErrors] = useState({});
 
   const airCommandOptions = ["North", "South", "East", "West", "Central"];
-  const taskListOptions = ["View", "Edit", "Share"];
+  const taskListOptions = ["View", "Edit", "Create"];
   const userTypeOptions = ["Admin", "Normal User", "Super User"];
   const userScopeCommandOptions = ["Command 1", "Command 2", "Command 3"];
 
@@ -199,34 +199,6 @@ function NewRole() {
                     </p>
                   )}
                 </div>
-
-                {/* Task List Dropdown */}
-                <div className="space-y-2">
-                  <label className="text-gray-700 dark:text-gray-300 text-sm">
-                    Task List
-                  </label>
-                  <select
-                    name="taskList"
-                    value={formData.taskList}
-                    onChange={handleInputChange}
-                    className={`w-full bg-white dark:bg-gray-700 border ${
-                      errors.taskList ? "border-red-500" : "border-gray-300"
-                    } dark:border-gray-600 p-3 rounded-lg`}
-                  >
-                    <option value="">Select Task</option>
-                    {taskListOptions.map((option) => (
-                      <option key={option} value={option}>
-                        {option}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.taskList && (
-                    <p className="text-red-500 text-xs mt-1">
-                      {errors.taskList}
-                    </p>
-                  )}
-                </div>
-
                 {/* User Scope Command Dropdown */}
                 <div className="space-y-2">
                   <label className="text-gray-700 dark:text-gray-300 text-sm">
@@ -252,6 +224,32 @@ function NewRole() {
                   {errors.userScopeCommand && (
                     <p className="text-red-500 text-xs mt-1">
                       {errors.userScopeCommand}
+                    </p>
+                  )}
+                </div>
+                {/* Task List Dropdown */}
+                <div className="space-y-2">
+                  <label className="text-gray-700 dark:text-gray-300 text-sm">
+                    Role Action
+                  </label>
+                  <select
+                    name="taskList"
+                    value={formData.taskList}
+                    onChange={handleInputChange}
+                    className={`w-full bg-white dark:bg-gray-700 border ${
+                      errors.taskList ? "border-red-500" : "border-gray-300"
+                    } dark:border-gray-600 p-3 rounded-lg`}
+                  >
+                    <option value="">Select Task</option>
+                    {taskListOptions.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+                  {errors.taskList && (
+                    <p className="text-red-500 text-xs mt-1">
+                      {errors.taskList}
                     </p>
                   )}
                 </div>

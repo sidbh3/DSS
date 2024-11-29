@@ -1,54 +1,232 @@
-
-
-
-
 import { useEffect, useState } from "react";
 import Table2 from "../../components/Common/Tables/Table2";
-import { FaFileAlt, FaChartLine, FaSearch } from "react-icons/fa";
+import { FaFileAlt, FaChartLine, FaSearch, FaExclamationCircle } from "react-icons/fa";
+
 const dummyData = [
   {
     sr_no: 1,
-    document_name: "Annual Report 2023",
-    origin: "Finance Department",
+    document_name: "Aircraft Maintenance Manual",
+    origin: "Technical Division",
     type: "PDF",
-    category: "Financial",
-    document_date: "2023-01-15",
+    category: "Maintenance",
+    document_date: "2024-01-15",
+    query: "Request for clarification on maintenance schedule",
+    status: "Pending",
+    priority: "High"
   },
   {
     sr_no: 2,
-    document_name: "Marketing Strategy",
-    origin: "Marketing Team",
+    document_name: "Flight Safety Protocol",
+    origin: "Flight Safety Wing",
     type: "DOCX",
-    category: "Strategy",
-    document_date: "2023-02-20",
+    category: "Safety",
+    document_date: "2024-01-20",
+    query: "Update needed for emergency procedures",
+    status: "In Progress",
+    priority: "Critical"
   },
   {
     sr_no: 3,
-    document_name: "Product Roadmap",
-    origin: "Product Team",
-    type: "XLSX",
-    category: "Planning",
-    document_date: "2023-03-10",
+    document_name: "Pilot Training Guidelines",
+    origin: "Training Command",
+    type: "PDF",
+    category: "Training",
+    document_date: "2024-01-25",
+    query: "Revision required for new aircraft integration",
+    status: "Resolved",
+    priority: "Medium"
   },
   {
     sr_no: 4,
-    document_name: "HR Policy Update",
-    origin: "Human Resources",
+    document_name: "Air Defense Operations Manual",
+    origin: "Air Defense Command",
     type: "PDF",
-    category: "Policy",
-    document_date: "2023-04-05",
+    category: "Operations",
+    document_date: "2024-01-28",
+    query: "Request for updated radar protocols",
+    status: "Under Review",
+    priority: "High"
   },
   {
     sr_no: 5,
-    document_name: "Q2 Sales Report",
-    origin: "Sales Department",
+    document_name: "Communication Systems Guide",
+    origin: "Signals Division",
     type: "PPTX",
-    category: "Reports",
-    document_date: "2023-07-01",
+    category: "Technical",
+    document_date: "2024-02-01",
+    query: "Encryption protocol clarification needed",
+    status: "Pending",
+    priority: "Critical"
   },
+  {
+    sr_no: 6,
+    document_name: "Weapons Systems Manual",
+    origin: "Armament Division",
+    type: "PDF",
+    category: "Technical",
+    document_date: "2024-02-03",
+    query: "Integration issues with new missile systems",
+    status: "In Progress",
+    priority: "Critical"
+  },
+  {
+    sr_no: 7,
+    document_name: "Air Traffic Control Guidelines",
+    origin: "ATC Division",
+    type: "PDF",
+    category: "Operations",
+    document_date: "2024-02-05",
+    query: "Clarification on new approach procedures",
+    status: "Under Review",
+    priority: "High"
+  },
+  {
+    sr_no: 8,
+    document_name: "Medical Evacuation Protocol",
+    origin: "Medical Services",
+    type: "DOCX",
+    category: "Medical",
+    document_date: "2024-02-07",
+    query: "Update required for high-altitude operations",
+    status: "Pending",
+    priority: "High"
+  },
+  {
+    sr_no: 9,
+    document_name: "Logistics Support Manual",
+    origin: "Logistics Command",
+    type: "PDF",
+    category: "Logistics",
+    document_date: "2024-02-10",
+    query: "Supply chain optimization queries",
+    status: "In Progress",
+    priority: "Medium"
+  },
+  {
+    sr_no: 10,
+    document_name: "Cyber Security Framework",
+    origin: "IT Division",
+    type: "PDF",
+    category: "Security",
+    document_date: "2024-02-12",
+    query: "Implementation of new security protocols",
+    status: "Under Review",
+    priority: "Critical"
+  },
+  {
+    sr_no: 11,
+    document_name: "Weather Analysis System",
+    origin: "Met Division",
+    type: "XLSX",
+    category: "Operations",
+    document_date: "2024-02-15",
+    query: "Integration with new weather radar",
+    status: "Pending",
+    priority: "High"
+  },
+  {
+    sr_no: 12,
+    document_name: "Personnel Training Records",
+    origin: "HR Division",
+    type: "XLSX",
+    category: "Personnel",
+    document_date: "2024-02-18",
+    query: "Database synchronization issues",
+    status: "Resolved",
+    priority: "Medium"
+  },
+  {
+    sr_no: 13,
+    document_name: "Emergency Response Plan",
+    origin: "Operations Command",
+    type: "PDF",
+    category: "Emergency",
+    document_date: "2024-02-20",
+    query: "Update needed for new base locations",
+    status: "In Progress",
+    priority: "High"
+  },
+  {
+    sr_no: 14,
+    document_name: "Fuel Management System",
+    origin: "Logistics Command",
+    type: "PPTX",
+    category: "Logistics",
+    document_date: "2024-02-22",
+    query: "Real-time tracking implementation",
+    status: "Under Review",
+    priority: "High"
+  },
+  {
+    sr_no: 15,
+    document_name: "Navigation Systems Guide",
+    origin: "Technical Division",
+    type: "PDF",
+    category: "Technical",
+    document_date: "2024-02-25",
+    query: "GPS integration clarification",
+    status: "Pending",
+    priority: "Medium"
+  },
+  {
+    sr_no: 16,
+    document_name: "Combat Training Manual",
+    origin: "Training Command",
+    type: "PDF",
+    category: "Training",
+    document_date: "2024-02-28",
+    query: "VR simulation integration support",
+    status: "In Progress",
+    priority: "High"
+  },
+  {
+    sr_no: 17,
+    document_name: "Base Security Protocol",
+    origin: "Security Wing",
+    type: "DOCX",
+    category: "Security",
+    document_date: "2024-03-01",
+    query: "Access control system upgrade",
+    status: "Under Review",
+    priority: "Critical"
+  },
+  {
+    sr_no: 18,
+    document_name: "Aircraft Inventory System",
+    origin: "Asset Management",
+    type: "XLSX",
+    category: "Logistics",
+    document_date: "2024-03-03",
+    query: "Parts tracking module issues",
+    status: "Pending",
+    priority: "High"
+  },
+  {
+    sr_no: 19,
+    document_name: "Communication Protocol",
+    origin: "Signals Division",
+    type: "PDF",
+    category: "Communications",
+    document_date: "2024-03-05",
+    query: "Secure channel configuration",
+    status: "In Progress",
+    priority: "Critical"
+  },
+  {
+    sr_no: 20,
+    document_name: "Mission Planning Software",
+    origin: "Operations Command",
+    type: "PPTX",
+    category: "Operations",
+    document_date: "2024-03-08",
+    query: "3D mapping integration support",
+    status: "Under Review",
+    priority: "High"
+  }
 ];
 
-function SupportInquires() {
+
+function SupportInquiries() {
   const [dataAnalysisData, setDataAnalysis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -80,6 +258,50 @@ function SupportInquires() {
           {value}
         </span>
       ),
+    },
+    {
+      Header: "Query",
+      accessor: "query",
+      Cell: ({ value }) => (
+        <div className="flex items-center space-x-2">
+          <FaExclamationCircle className="text-yellow-500" />
+          <span className="text-sm">{value}</span>
+        </div>
+      ),
+    },
+    {
+      Header: "Priority",
+      accessor: "priority",
+      Cell: ({ value }) => {
+        const colors = {
+          High: "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-200",
+          Critical: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200",
+          Medium: "bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200",
+          Low: "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200"
+        };
+        return (
+          <span className={`px-3 py-1 rounded-full ${colors[value]} text-sm font-medium`}>
+            {value}
+          </span>
+        );
+      },
+    },
+    {
+      Header: "Status",
+      accessor: "status",
+      Cell: ({ value }) => {
+        const colors = {
+          Pending: "bg-yellow-100 text-yellow-800",
+          "In Progress": "bg-blue-100 text-blue-800",
+          Resolved: "bg-green-100 text-green-800",
+          "Under Review": "bg-purple-100 text-purple-800"
+        };
+        return (
+          <span className={`px-3 py-1 rounded-full ${colors[value]} text-sm font-medium`}>
+            {value}
+          </span>
+        );
+      },
     },
     {
       Header: "Type",
@@ -122,7 +344,7 @@ function SupportInquires() {
   }, []);
 
   return (
-    <div className="w-full flex flex-col gap-8  bg-gray-50 dark:bg-gray-900">
+    <div className="w-full flex flex-col gap-8 bg-gray-50 dark:bg-gray-900">
       <h1 className="text-3xl font-bold text-gray-800 dark:text-white tracking-wide border-b border-gray-200 dark:border-gray-700 pb-4">
         Support Inquiries
       </h1>
@@ -138,4 +360,4 @@ function SupportInquires() {
   );
 }
 
-export default SupportInquires;
+export default SupportInquiries;

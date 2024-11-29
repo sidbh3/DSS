@@ -93,9 +93,17 @@ const data = [
   {
     empId: "IAF1008",
     firstName: "Zara",
-    lastName: "Khan",
-    email: "zara.khan@iaf.gov.in",
+    lastName: "tata",
+    email: "zara.tata@iaf.gov.in",
     designation: "Squadron Leader",
+    lastUpdated: "2024-01-08T12:25:00",
+  },
+  {
+    empId: "IAF1011",
+    firstName: "hello",
+    lastName: "hello",
+    email: "hello.ekvayu@iaf.gov.in",
+    designation: "Sequel Leader",
     lastUpdated: "2024-01-08T12:25:00",
   },
 ];
@@ -147,7 +155,7 @@ function ExistingUser() {
       <div className="max-w-7xl mx-auto">
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-8 border-b border-gray-200 dark:border-gray-700 pb-4">
           Existing Users
-          <span className="text-sm font-normal text-gray-600 dark:text-gray-400 ml-4">
+          <span className="text-sm font-normal text-gray-600 dark:text-gray-400 ml-4 ">
             Indian Air Force
           </span>
         </h1>
