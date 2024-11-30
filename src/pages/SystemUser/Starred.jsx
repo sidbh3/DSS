@@ -205,7 +205,7 @@ const dummyData = [
   },
 ];
 
-function DataAnalysis() {
+function Starred() {
   const [dataAnalysisData, setDataAnalysis] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -316,4 +316,4 @@ function DataAnalysis() {
   );
 }
 
-export default DataAnalysis;
+export default Starred;
