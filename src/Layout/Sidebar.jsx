@@ -146,18 +146,14 @@ function Sidebar() {
             <li key={index}>
               <Link
                 to={item.path}
-                className={`flex items-center gap-3 px-3 rounded-md py-2 text-sm hover:bg-secondary dark:hover:bg-gray-800 transition duration-150 ease-in-out tracking-widest ${
+                className={`flex items-center gap-3 px-3 rounded-md py-2 text-sm hover:bg-secondary hover:text-white dark:hover:bg-gray-800 transition duration-150 ease-in-out tracking-widest ${
                   location.pathname === item.path
-                    ? "bg-secondary dark:bg-gray-800"
+                    ? "bg-secondary dark:bg-gray-800 text-white"
                     : ""
                 }`}
               >
-                <span className="text-secondary-foreground dark:text-gray-200">
-                  {item.icon}
-                </span>
-                <span className="text-secondary-foreground dark:text-gray-200">
-                  {item.title}
-                </span>
+                <span className="">{item.icon}</span>
+                <span className="">{item.title}</span>
               </Link>
             </li>
           ))}
